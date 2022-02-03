@@ -19,13 +19,13 @@ namespace Cache_Capstone.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-               SELECT v.Id, v.Title, v.Description, v.Url, v.DateCreated, v.UserId,
+            SELECT v.Id, v.Title, v.Description, v.Url, v.DateCreated, v.UserId,
 
-                      up.Name, up.Email, up.DateCreated AS UserDateCreated,
+                      up.FirstName, up.LastName, up.Email, up.UserName
                        
                         
                  FROM Video v 
-                      JOIN User up ON v.UserId = up.Id
+                      JOIN [User] up ON v.UserId = up.Id
              ORDER BY DateCreated
             ";
 
@@ -43,7 +43,15 @@ namespace Cache_Capstone.Repositories
                                 Url = DbUtils.GetString(reader, "Url"),
                                 DateCreated = DbUtils.GetDateTime(reader, "DateCreated"),
                                 UserId = DbUtils.GetInt(reader, "UserId"),
-                               
+                                UserProfile = new User()
+                                {
+                                    Id = DbUtils.GetInt(reader, "UserId"),
+                                    FirstName = DbUtils.GetString(reader, "FirstName"),
+                                    LastName = DbUtils.GetString(reader, "LastName"),
+                                    Email = DbUtils.GetString(reader, "Email"),
+                                    UserName = DbUtils.GetString(reader, "UserName")
+                                    
+                                },
                             });
                         }
 
@@ -69,7 +77,7 @@ namespace Cache_Capstone.Repositories
                         
                        c.Id AS CommentId, c.Message, c.UserId AS CommentUserId
                   FROM Video v 
-                       JOIN User up ON v.UserId = up.Id
+                       JOIN [User] up ON v.UserId = up.Id
                        LEFT JOIN Comment c on c.VideoId = v.id
              ORDER BY  v.DateCreated
             ";
@@ -124,7 +132,7 @@ namespace Cache_Capstone.Repositories
                        
                         
                  FROM Video v 
-                      JOIN User up ON v.UserId = up.Id
+                      JOIN [User] up ON v.UserId = up.Id
                            WHERE v.Id = @Id";
 
                     DbUtils.AddParameter(cmd, "@Id", id);
@@ -169,7 +177,7 @@ namespace Cache_Capstone.Repositories
                       
                         
                 FROM Video v 
-                     JOIN User up ON v.UserId = up.Id
+                     JOIN [User] up ON v.UserId = up.Id
                WHERE v.Title LIKE @Criterion OR v.Description LIKE @Criterion";
 
                     if (sortDescending)
@@ -221,7 +229,7 @@ namespace Cache_Capstone.Repositories
                       
                         
                 FROM Video v 
-                     JOIN User up ON v.UserId = up.Id
+                     JOIN [User] up ON v.UserId = up.Id
                WHERE v.DateCreated >= @searchDate";
 
                     cmd.CommandText = sql;
@@ -260,13 +268,16 @@ namespace Cache_Capstone.Repositories
                     cmd.CommandText = @"
                         INSERT INTO Video (Title, Description, DateCreated, Url, UserId)
                         OUTPUT INSERTED.ID
-                        VALUES (@Title, @Description, @DateCreated, @Url, @UserId)";
+                        VALUES (@Title, @Description, @DateCreated, @Url, @UserId)
+                        
+                        ";
 
                     DbUtils.AddParameter(cmd, "@Title", video.Title);
                     DbUtils.AddParameter(cmd, "@Description", video.Description);
                     DbUtils.AddParameter(cmd, "@DateCreated", video.DateCreated);
                     DbUtils.AddParameter(cmd, "@Url", video.Url);
                     DbUtils.AddParameter(cmd, "@UserId", video.UserId);
+                    
 
                     video.Id = (int)cmd.ExecuteScalar();
                 }

@@ -12,7 +12,7 @@ namespace Cache_Capstone.Repositories
     {
         public UserProfileRepository(IConfiguration configuration) : base(configuration) { }
 
-        public User GetByFirebaseUserId(string firebaseUserId)
+        public User GetByFirebaseUserId(string firebaseId)
         {
             using (var conn = Connection)
             {
@@ -20,13 +20,13 @@ namespace Cache_Capstone.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT up.Id, Up.FirebaseUserId, up.UserName AS UserName, up.Email, up.UserTypeId,
+                        SELECT up.Id, Up.FirebaseId, up.FirstName, up.LastName, up.UserName AS UserName, up.Email, up.UserTypeId,
                                ut.Name AS UserTypeName
-                          FROM User up
+                          FROM [User] as up
                                LEFT JOIN UserType ut on up.UserTypeId = ut.Id
-                         WHERE FirebaseUserId = @FirebaseuserId";
+                         WHERE FirebaseId = @FirebaseId";
 
-                    DbUtils.AddParameter(cmd, "@FirebaseUserId", firebaseUserId);
+                    DbUtils.AddParameter(cmd, "@FirebaseId", firebaseId);
 
                     User userProfile = null;
 

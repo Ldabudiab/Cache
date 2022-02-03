@@ -21,7 +21,7 @@ namespace Cache_Capstone.Controllers
             _upRepo = userProfileRepository;
         }
 
-        [Authorize]
+        
         [HttpPost]
         public IActionResult Post(User userProfile)
         {
@@ -35,7 +35,7 @@ namespace Cache_Capstone.Controllers
         }
 
 
-        [Authorize]
+       
         [HttpGet("{firebaseUserId}")]
         public IActionResult GetByFirebaseUserId(string firebaseUserId)
         {
@@ -46,7 +46,7 @@ namespace Cache_Capstone.Controllers
             }
             return Ok(userProfile);
         }
-        [Authorize]
+        
         [HttpGet("DoesUserExist/{firebaseUserId}")]
         public IActionResult DoesUserExist(string firebaseUserId)
         {

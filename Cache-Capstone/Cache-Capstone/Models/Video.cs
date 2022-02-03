@@ -20,7 +20,7 @@ namespace Cache_Capstone.Models
 
         public int UserId { get; set; }
 
-        
+        public User UserProfile { get; set; }
 
         
     }
