@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardBody } from "reactstrap";
+import { useHistory } from "react-router-dom";
+import { getVideoTagsByVideoId } from "../modules/VideoTagManager";
 
 const Video = ({ video }) => {
-    console.log(video);
+    
+
+    
+
+    const [videoTags, setVideoTags] = useState([]);
+
+    const getVideoTags = () => {
+        getVideoTagsByVideoId(video.id).then(tags => setVideoTags(tags));
+    }
+   const history = useHistory();
+
+   useEffect(() => {
+    getVideoTags();
+}, []);
+
+console.log(videoTags);
+
     {
         return (
             <Card >
@@ -18,14 +36,16 @@ const Video = ({ video }) => {
                     <p>
                         <strong>{video.title}</strong>
                     </p>
-
+                    <div className="row justify-content-center">
+                        {videoTags.map((tag) => (
+                           <p>{tag.tag.name}</p> 
+                            ))}
+                    </div>
+                     
                     <p>{video.description}</p>
-                    {video.comments?.length > 0 ? <h5>Comments</h5> : null}
-                    {video.comments?.map(c =>
-                        <div key={c.id}>
-                            <p >{c.message}</p>
-                            <p>Comment by: {c.userProfile.name}</p>
-                        </div>)}
+
+                    <button onClick={() => {history.push(`/managetags/${video.id}`)}}>Manage Tags</button>
+    
 
                 </CardBody>
             </Card>

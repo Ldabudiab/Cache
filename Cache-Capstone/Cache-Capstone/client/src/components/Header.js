@@ -18,6 +18,12 @@ const Header = () => {
             New Video
           </Link>
         </li>
+        <li className="nav-item">
+          <Link to="/taglist" className="nav-link">
+            Tags
+          </Link>
+        </li>
+        
       </ul>
     </nav>
   );

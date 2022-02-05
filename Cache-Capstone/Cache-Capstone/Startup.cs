@@ -31,6 +31,8 @@ namespace Cache_Capstone
         {
             services.AddTransient<IUserProfileRepository, UserProfileRepository>();
             services.AddTransient<IVideoRepository, VideoRepository>();
+            services.AddTransient<ITagRepository, TagRepository>();
+            services.AddTransient<IVideoTagRepository, VideoTagRepository>();
 
             var firebaseProjectId = Configuration.GetValue<string>("FirebaseProjectId");
             var googleTokenUrl = $"https://securetoken.google.com/{firebaseProjectId}";

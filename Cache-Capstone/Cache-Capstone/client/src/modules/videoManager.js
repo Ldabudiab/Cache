@@ -28,3 +28,8 @@ export const addVideo = (video) => {
         body: JSON.stringify(video),
     });
     })};
+
+    export const searchVideos = (input) => {
+        return fetch(`${baseUrl}/search?q=${input}&sortDesc=true`)
+            .then((res) => res.json())
+    }
