@@ -13,7 +13,7 @@ const VideoTag = ({ videoTag, handleTagSelected, activeTagIds }) => {
 
     return (
         <div>
-            <p >{videoTag.name}</p>
+            <p>{videoTag.name}</p>
             <Button
                 id={`manageTags--${videoTag.id}`}
                 onClick={handleTagSelected}

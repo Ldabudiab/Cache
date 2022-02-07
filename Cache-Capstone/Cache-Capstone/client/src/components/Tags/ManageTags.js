@@ -38,7 +38,7 @@ const ManageTags = () => {
             );
         else clearVideoTags(id);
         setTimeout(() => {
-            history.push(`/videos/${id}`);
+            history.push(`/`);
         }, 500);
     };
 

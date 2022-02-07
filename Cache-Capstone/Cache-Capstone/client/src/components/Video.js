@@ -24,28 +24,36 @@ console.log(videoTags);
     {
         return (
             <Card >
-                <p className="text-left px-2">Posted by: {video.userProfile.userName}</p>
-                <CardBody>
+                
+                <CardBody> 
+                   
+                    <div className="vidcard-lbox">
+
                     <iframe className="video"
                         src={video.url}
                         title="YouTube video player"
                         frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen />
+                    <p className="videoposter">{video.userProfile.userName}</p>
+                    
+                    </div>
 
-                    <p>
+                    <div className="vidcard-rbox">
+                    <p className="vid-title">
                         <strong>{video.title}</strong>
                     </p>
-                    <div className="row justify-content-center">
+
+                    <p className="vid-desc">{video.description}</p>
+
+                    <div className="tags-style">
                         {videoTags.map((tag) => (
-                           <p>{tag.tag.name}</p> 
+                           <p className="tag">{tag.tag.name}</p> 
                             ))}
                     </div>
-                     
-                    <p>{video.description}</p>
+                    <button className="mng-tags-button" onClick={() => {history.push(`/managetags/${video.id}`)}}>Manage Tags</button>
 
-                    <button onClick={() => {history.push(`/managetags/${video.id}`)}}>Manage Tags</button>
-    
+                    </div>            
 
                 </CardBody>
             </Card>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Video from './Video';
 import { getAllVideos } from "../modules/videoManager";
+import "./Styling/videoList.css"
 
 const VideoList = () => {
     const [videos, setVideos] = useState([]);
@@ -15,11 +16,14 @@ const VideoList = () => {
 
 
     return (
-        <div className="row justify-content-center">
-            {videos.map((video) => (
+        <div className="vidlist">
+            <div className="row justify-content-center">
+                {videos.map((video) => (
                 <Video video={video} key={video.id} />
-            ))}
+                     ))}
+            </div>
         </div>
+        
     );
 };
 
