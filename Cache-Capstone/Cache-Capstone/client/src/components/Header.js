@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Styling/nav.css"
-
+import { logout } from "../modules/authManager";
 
 const Header = () => {
   return (
@@ -27,6 +27,7 @@ const Header = () => {
         </li>
         
       </ul>
+      <button onClick={logout}>Logout</button>
     </nav>
   );
 };

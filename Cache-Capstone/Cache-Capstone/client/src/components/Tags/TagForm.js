@@ -26,16 +26,16 @@ const TagForm = () => {
     const handleCreateTag = () => {
         addTag(tag)
 
-            .then(history.push("/tag"))
+            .then(history.push("/taglist"))
     }
 
     const handleClickUpdateTag = () => {
         updateTag(tag)
-            .then(history.push("/tag"))
+            .then(history.push("/taglist"))
     }
 
     const handleClickCancel = () => {
-        history.push("/tag")
+        history.push("/taglist")
     }
 
     const history = useHistory();
