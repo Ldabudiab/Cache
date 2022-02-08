@@ -11,13 +11,17 @@ import { AddTag } from "./Tags/AddTag";
 import DeleteTag from "./Tags/DeleteTags";
 import EditTag from "./Tags/EditTags";
 import ManageTags from "./Tags/ManageTags";
+import DeleteVideo from "./DeleteVideo";
 
 const ApplicationViews = ({ isLoggedIn }) => {
+
+   
+
     return (
         <Switch>
 
             <Route path="/" exact>
-                {isLoggedIn ? <SearchBar /> : <Redirect to="/login" />}
+                {/* {isLoggedIn ? <SearchBar /> : <Redirect to="/login" />} */}
                 {isLoggedIn ? <VideoList /> : <Redirect to="/login" />}
             </Route>
             <Route path="/taglist">
@@ -40,6 +44,9 @@ const ApplicationViews = ({ isLoggedIn }) => {
             </Route>
             <Route path="/videoform">
                 <VideoForm />
+            </Route>
+            <Route path="/deletevideo/:id">
+                <DeleteVideo />
             </Route>
             <Route path="/login">
                 <Login />

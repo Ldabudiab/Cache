@@ -3,6 +3,7 @@ import { Card, CardBody } from "reactstrap";
 import { useHistory } from "react-router-dom";
 import { getVideoTagsByVideoId } from "../modules/VideoTagManager";
 
+
 const Video = ({ video }) => {
     
 
@@ -15,11 +16,16 @@ const Video = ({ video }) => {
     }
    const history = useHistory();
 
+
+   const handleDelete = () => {
+    history.push(`/deletevideo/${video.id}`);
+};
+
    useEffect(() => {
     getVideoTags();
 }, []);
 
-console.log(videoTags);
+
 
     {
         return (
@@ -36,6 +42,9 @@ console.log(videoTags);
                         allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen />
                     <p className="videoposter">{video.userProfile.userName}</p>
+                    <button className="delete-btn" onClick={handleDelete}>
+                    Delete
+                    </button>
                     
                     </div>
 

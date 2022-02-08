@@ -163,59 +163,59 @@ namespace Cache_Capstone.Repositories
 
         
 
-        public List<Video> Search(string criterion, bool sortDescending)
-        {
-            using (var conn = Connection)
-            {
-                conn.Open();
-                using (var cmd = conn.CreateCommand())
-                {
-                    var sql = @"
-              SELECT v.Id, v.Title, v.Description, v.Url, v.DateCreated AS VideoDateCreated, v.UserId,
+        //public List<Video> Search(string criterion, bool sortDescending)
+        //{
+        //    using (var conn = Connection)
+        //    {
+        //        conn.Open();
+        //        using (var cmd = conn.CreateCommand())
+        //        {
+        //            var sql = @"
+        //      SELECT v.Id, v.Title, v.Description, v.Url, v.DateCreated AS VideoDateCreated, v.UserId,
 
-                     up.Name, up.Email, up.DateCreated AS UserDateCreated
+        //             up.Name, up.Email, up.DateCreated AS UserDateCreated
                       
                         
-                FROM Video v 
-                     JOIN [User] up ON v.UserId = up.Id
-               WHERE v.Title LIKE @Criterion OR v.Description LIKE @Criterion";
+        //        FROM Video v 
+        //             JOIN [User] up ON v.UserId = up.Id
+        //       WHERE v.Title LIKE @Criterion OR v.Description LIKE @Criterion";
 
-                    if (sortDescending)
-                    {
-                        sql += " ORDER BY v.DateCreated DESC";
-                    }
-                    else
-                    {
-                        sql += " ORDER BY v.DateCreated";
-                    }
+        //            if (sortDescending)
+        //            {
+        //                sql += " ORDER BY v.DateCreated DESC";
+        //            }
+        //            else
+        //            {
+        //                sql += " ORDER BY v.DateCreated";
+        //            }
 
-                    cmd.CommandText = sql;
-                    DbUtils.AddParameter(cmd, "@Criterion", $"%{criterion}%");
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
+        //            cmd.CommandText = sql;
+        //            DbUtils.AddParameter(cmd, "@Criterion", $"%{criterion}%");
+        //            using (SqlDataReader reader = cmd.ExecuteReader())
+        //            {
 
-                        var videos = new List<Video>();
-                        while (reader.Read())
-                        {
-                            videos.Add(new Video()
-                            {
-                                Id = DbUtils.GetInt(reader, "Id"),
-                                Title = DbUtils.GetString(reader, "Title"),
-                                Description = DbUtils.GetString(reader, "Description"),
-                                DateCreated = DbUtils.GetDateTime(reader, "VideoDateCreated"),
-                                Url = DbUtils.GetString(reader, "Url"),
-                                UserId = DbUtils.GetInt(reader, "UserId"),
+        //                var videos = new List<Video>();
+        //                while (reader.Read())
+        //                {
+        //                    videos.Add(new Video()
+        //                    {
+        //                        Id = DbUtils.GetInt(reader, "Id"),
+        //                        Title = DbUtils.GetString(reader, "Title"),
+        //                        Description = DbUtils.GetString(reader, "Description"),
+        //                        DateCreated = DbUtils.GetDateTime(reader, "VideoDateCreated"),
+        //                        Url = DbUtils.GetString(reader, "Url"),
+        //                        UserId = DbUtils.GetInt(reader, "UserId"),
                                
-                            });
-                        }
+        //                    });
+        //                }
 
-                        return videos;
-                    }
-                }
-            }
-        }
+        //                return videos;
+        //            }
+        //        }
+        //    }
+        //}
 
-        public List<Video> SearchByDate(string searchDate)
+        public List<Video> SearchByTag(string searchTag)
         {
             using (var conn = Connection)
             {
@@ -225,15 +225,20 @@ namespace Cache_Capstone.Repositories
                     var sql = @"
               SELECT v.Id, v.Title, v.Description, v.Url, v.DateCreated AS VideoDateCreated, v.UserId,
 
-                     up.Name, up.Email, up.DateCreated AS UserDateCreated
+                     up.UserName, up.Email, up.FirstName, up.LastName,
+                     vt.Id, vt.TagId, vt.VideoId,
+                     t.Name
+                     
                       
                         
                 FROM Video v 
                      JOIN [User] up ON v.UserId = up.Id
-               WHERE v.DateCreated >= @searchDate";
+                     JOIN VideoTag vt on vt.VideoId = v.id
+                     JOIN Tag t on t.Id = vt.TagId
+               WHERE t.name = @searchTag";
 
                     cmd.CommandText = sql;
-                    DbUtils.AddParameter(cmd, "@searchDate", searchDate);
+                    DbUtils.AddParameter(cmd, "@searchtag", searchTag);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
 
@@ -248,7 +253,19 @@ namespace Cache_Capstone.Repositories
                                 DateCreated = DbUtils.GetDateTime(reader, "VideoDateCreated"),
                                 Url = DbUtils.GetString(reader, "Url"),
                                 UserId = DbUtils.GetInt(reader, "UserId"),
-                              
+                                UserProfile = new User()
+                                {
+                                    Id = DbUtils.GetInt(reader, "UserId"),
+                                    FirstName = DbUtils.GetString(reader, "FirstName"),
+                                    LastName = DbUtils.GetString(reader, "LastName"),
+                                    Email = DbUtils.GetString(reader, "Email"),
+                                    UserName = DbUtils.GetString(reader, "UserName")
+
+                                },
+                                VideoTags = new Tag()
+                                {
+                                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                                },
                             });
                         }
 
@@ -319,7 +336,7 @@ namespace Cache_Capstone.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "DELETE FROM Video WHERE Id = @Id";
+                    cmd.CommandText = "DELETE FROM Video WHERE Id = @id";
                     DbUtils.AddParameter(cmd, "@id", id);
                     cmd.ExecuteNonQuery();
                 }

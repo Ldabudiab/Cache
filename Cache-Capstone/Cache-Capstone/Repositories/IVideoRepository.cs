@@ -11,9 +11,9 @@ namespace Cache_Capstone.Repositories
         System.Collections.Generic.List<Video> GetAll();
         System.Collections.Generic.List<Video> GetAllWithComments();
         Video GetById(int id);
-        
-        System.Collections.Generic.List<Video> Search(string criterion, bool sortDescending);
-        System.Collections.Generic.List<Video> SearchByDate(string searchDate);
+        List<Video> SearchByTag(string searchTag);
+        //System.Collections.Generic.List<Video> Search(string criterion, bool sortDescending);
+        //System.Collections.Generic.List<Video> SearchByDate(string searchDate);
         void Update(Video video);
     }
 }

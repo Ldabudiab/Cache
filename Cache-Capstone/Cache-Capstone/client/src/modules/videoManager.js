@@ -30,6 +30,26 @@ export const addVideo = (video) => {
     })};
 
     export const searchVideos = (input) => {
-        return fetch(`${baseUrl}/search?q=${input}&sortDesc=true`)
-            .then((res) => res.json())
-    }
+        return getToken().then(token => {
+        return fetch(`${baseUrl}/searchbytag?searchTag=${input}&sortDesc=true`, {
+            method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+        
+        }).then(resp => resp.json())
+    })
+};
+        
+
+    export const deleteVideoById = (id) => {
+        return getToken().then(token => {
+        return fetch(baseUrl + `/${id}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        });
+    })};
