@@ -22,6 +22,6 @@ namespace Cache_Capstone.Models
 
         public User UserProfile { get; set; }
 
-        
+        public Tag VideoTags { get; set; }
     }
 }
