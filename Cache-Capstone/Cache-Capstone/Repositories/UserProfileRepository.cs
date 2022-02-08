@@ -63,9 +63,9 @@ namespace Cache_Capstone.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"INSERT INTO [User] (FirebaseId, FirstName, LastName, UserName, Email, UserTypeId)
+                    cmd.CommandText = @"INSERT INTO User (FirebaseId, FirstName, LastName, UserName, Email, UserTypeId)
                                         OUTPUT INSERTED.ID
-                                        VALUES (@FirebaseId, @FirstName, @LastName, @UserName, @Email, @UserTypeId)";
+                                        VALUES (@FirebaseId, @Name, @Email, @UserTypeId)";
                     DbUtils.AddParameter(cmd, "@FirebaseId", userProfile.FirebaseId);
                     DbUtils.AddParameter(cmd, "@FirstName", userProfile.FirstName);
                     DbUtils.AddParameter(cmd, "@LastName", userProfile.LastName);
@@ -79,6 +79,6 @@ namespace Cache_Capstone.Repositories
         }
 
 
-
+       
     }
 }

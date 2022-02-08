@@ -13,7 +13,6 @@ namespace Cache_Capstone.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class UserProfileController : ControllerBase
     {
         private readonly IUserProfileRepository _upRepo;
@@ -31,7 +30,7 @@ namespace Cache_Capstone.Controllers
             _upRepo.Add(userProfile);
             return CreatedAtAction(
                 nameof(GetByFirebaseUserId),
-                new { firebaseUserId = userProfile.FirebaseId },
+                new { firebaseId = userProfile.FirebaseId },
                 userProfile);
         }
 

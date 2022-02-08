@@ -30,16 +30,16 @@ namespace Cache_Capstone.Controllers
         
         
         
-        //[HttpGet("search")]
-        //public IActionResult Search(string q, bool sortDesc)
-        //{
-        //    return Ok(_videoRepository.Search(q, sortDesc));
-        //}
-        
-        [HttpGet("searchbytag")]
-        public IActionResult SearchByTag(string searchTag)
+        [HttpGet("search")]
+        public IActionResult Search(string q, bool sortDesc)
         {
-            return Ok(_videoRepository.SearchByTag(searchTag));
+            return Ok(_videoRepository.Search(q, sortDesc));
+        }
+        
+        [HttpGet("hottest")]
+        public IActionResult SearchByDate(string since)
+        {
+            return Ok(_videoRepository.SearchByDate(since));
         }
         
         [HttpGet("{id}")]
